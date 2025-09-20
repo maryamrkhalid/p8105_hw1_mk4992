@@ -1,0 +1,61 @@
+---
+title: "P8105 HW1 – mk4992"
+author: "Maryam Khalid"
+output:
+  github_document:
+    toc: true
+    toc_depth: 2
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+set.seed(8105)
+```
+
+**Problem 1**
+
+```{r libraries}
+library(moderndive)  
+library(ggplot2)     
+```
+
+```{r load-data}
+data("early_january_weather")
+```
+
+Data Summary 
+Rows: `r nrow(early_january_weather)`  
+Columns: `r ncol(early_january_weather)`  
+Mean temperature: `r round(mean(early_january_weather$temp, na.rm = TRUE), 1)` °F
+
+Key variables (see help in Console with `?early_january_weather`):`time_hour` (date & timestamp), `temp` (°F), `humid` (0–100), `dewp`, `wind_dir`, `wind_speed`, `pressure`, `visib`, etc.
+
+Scatterplot: temp(y) vs time_hour(x); colored by humidity
+
+```{r plot-temp-vs-time, fig.width=8, fig.height=4}
+p_temp_time <- ggplot(early_january_weather,
+                      aes(x = time_hour, y = temp, color = humid)) +
+  geom_point(alpha = 0.7, size = 1.5, na.rm = TRUE) +
+  scale_color_continuous(name = "Humidity") +
+  labs(
+    title = "Temperature over Time (colored by Humidity)",
+    x = "Time (hourly)",
+    y = "Temperature (°F)"
+  ) +
+  theme_minimal(base_size = 12)
+
+p_temp_time
+```
+
+**Note:** The temperature fluctuates daily from day to night. In addition, when the temperature is higher, the humidity is typically increased as well.
+
+```{r save-plot}
+ggsave("temp_vs_time_humid_scatter.png", p_temp_time, width = 8, height = 4, dpi = 300)
+```
+
+
+```{r}
+sessionInfo()
+```
